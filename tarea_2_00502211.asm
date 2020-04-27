@@ -15,7 +15,7 @@
 	mov	bx,1d
 	cmp	ax,bx
 	jz 	frase1
-	jmp	ejercicio3
+	jmp	ejercicio2
 
 frase1: 
 section	.text
@@ -35,6 +35,39 @@ contador: mov	bl,[comnt+di]
 section	.data
 comnt	db	"Solo necesito el 0"
 len	equ	$-comnt
+
+ejercicio2:
+	mov	ax,0000h	
+	mov	bx,0000h
+	mov	cx,0000h
+	mov	di,0d
+	mov	ax,2d
+	mov 	bx,2d
+	mov 	di,0d
+	mov	cx,0d
+
+
+simulacion: mul     bx
+        mov     [210h+di],ax
+        inc     cx
+	inc 	di
+	cmp     cx,11d
+        jz      terminado
+        cmp     ah,0d
+	jz	simulacion
+	call 	simulacion2
+
+simulacion2:                          
+        mul     bx
+        inc     di
+        mov     [210h+di],ax
+        inc     cx
+	inc     di
+        cmp     cx,11d
+        jz      terminado
+        call    simulacion2
+
+terminado: jmp	ejercicio3
 
 ejercicio3:
 	mov	ax,0000h	
