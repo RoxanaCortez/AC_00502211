@@ -15,7 +15,6 @@
 	mov	bx,1d
 	cmp	ax,bx
 	jz 	frase1
-	jmp	ejercicio2
 
 frase1: 
 section	.text
@@ -28,9 +27,8 @@ contador: mov	bl,[comnt+di]
 	inc	di		
 	cmp	di,cx
 	jbe	contador
-
-		
-	int 	20h
+	
+	jmp	ejercicio2
 
 section	.data
 comnt	db	"Solo necesito el 0"
@@ -89,6 +87,17 @@ serie:	add	ax,bx
 	cmp	di,16d
 	jz	salida
 	cmp	ah,0h
-	jz	serie	
+	jz	serie
+
+serie2:	add	ax,bx
+	inc	di
+	mov	[222h+di],ax
+	mov 	cx,bx
+	mov	bx,ax
+	mov	ax,cx
+	inc	di
+	cmp	di,16d
+	jz	salida
+	call	serie2	
 
 salida:	int 20h
