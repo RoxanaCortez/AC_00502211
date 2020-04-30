@@ -16,7 +16,7 @@
 	cmp	ax,bx
 	jz 	frase1
 
-frase1: 
+frase1: 		;leyendo la frase dinamicamente
 section	.text
 	mov	cx,0d
 	mov	di,0d
@@ -28,33 +28,34 @@ contador: mov	bl,[comnt+di]
 	cmp	di,cx
 	jbe	contador
 	
-	jmp	ejercicio2
+	jmp	ejercicio2	;llamamos directamente el ejercicio 2 asi que visualizaremos el resultado cuando se terminen de ejecutar los 3
 
 section	.data
 comnt	db	"Solo necesito el 0"
 len	equ	$-comnt
 
-ejercicio2:
-	mov	ax,0000h	
-	mov	bx,0000h
-	mov	cx,0000h
+ejercicio2:  		;inicialilzando las celdas
+	
 	mov	di,0d
 	mov	ax,2d
 	mov 	bx,2d
 	mov 	di,0d
 	mov	cx,0d
 
-
-simulacion: mul     bx
+;a partir del numero 256 se ocuparan dos cedas por lo tanto tenememos dos casos
+; el primero es para cuando todavia el ah este vacio y el otro para cuando ah ya tenga un elemento dentro
+; esto ocurre tambien para el ejercicio 2 :)
+;caso 1 numeros menores o igual a 255
+simulacion: mul     bx	 
         mov     [210h+di],ax
         inc     cx
 	inc 	di
 	cmp     cx,11d
         jz      terminado
-        cmp     ah,0d
-	jz	simulacion
+        cmp     ax,255d
+	jbe	simulacion
 	call 	simulacion2
-
+;caso 2 numeros mayores a 255
 simulacion2:                          
         mul     bx
         inc     di
@@ -68,36 +69,34 @@ simulacion2:
 terminado: jmp	ejercicio3
 
 ejercicio3:
-	mov	ax,0000h	
-	mov	bx,0000h
-	mov	cx,0000h
-	mov	di,0d
+	mov	di,0h
 
 	mov	ax,0d
 	mov	[220h],ax
 	mov	bx,1d
 	mov	[221h],bx
-
+;primer caso con numeros menores o igual a 255
 serie:	add	ax,bx
 	mov	[222h+di],ax
 	mov 	cx,bx
 	mov	bx,ax
 	mov	ax,cx
 	inc	di
-	cmp	di,16d
+	cmp	di,13d
 	jz	salida
-	cmp	ah,0h
-	jz	serie
-
-serie2:	add	ax,bx
+	cmp	ax,255d
+	jbe	serie
+	call 	serie2
+;caso 2: dos celdas numeros mayores a 255
+serie2: add	ax,bx
 	inc	di
 	mov	[222h+di],ax
 	mov 	cx,bx
 	mov	bx,ax
 	mov	ax,cx
 	inc	di
-	cmp	di,16d
+	cmp	di,13d
 	jz	salida
-	call	serie2	
+	loop	serie2	
 
-salida:	int 20h
+salida: int 	20h
